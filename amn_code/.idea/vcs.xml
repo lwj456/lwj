@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/../amn_opensource_code/Real-Time-Voice-Cloning" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../amn_opensource_code/TimbreWatermarking" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../amn_opensource_code/Trainer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../amn_opensource_code/aasist" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../amn_opensource_code/coqui_ai_TTS" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../amn_opensource_code/voxceleb_trainer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../amn_opensource_code/voxceleb_trainer/models/weights/RawNet3" vcs="Git" />
+  </component>
+</project>

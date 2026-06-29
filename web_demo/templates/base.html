@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AudioMarkNet Web Demo</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="bg-orb bg-orb-a"></div>
+  <div class="bg-orb bg-orb-b"></div>
+  <div class="bg-orb bg-orb-c"></div>
+
+  <main class="shell">
+    <header class="hero-shell hero-shell--centered">
+      <div class="hero-copy hero-copy--centered">
+        <p class="eyebrow">AudioMarkNet Studio</p>
+        <h1>音频水印工作台</h1>
+      </div>
+    </header>
+
+    <nav class="feature-nav" aria-label="主功能导航">
+      <a class="feature-card {% if active_page == 'embed' %}is-active{% endif %}" href="{{ url_for('embed_page') }}">
+        <span class="feature-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v18"></path>
+            <path d="M7 8l5-5 5 5"></path>
+            <path d="M5 21h14"></path>
+          </svg>
+        </span>
+        <div>
+          <strong>水印嵌入</strong>
+          <p>训练专属模型并生成带水印音频</p>
+        </div>
+      </a>
+      <a class="feature-card {% if active_page == 'detect' %}is-active{% endif %}" href="{{ url_for('detect_page') }}">
+        <span class="feature-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-3.5-3.5"></path>
+          </svg>
+        </span>
+        <div>
+          <strong>水印检测</strong>
+          <p>按已保存模型逐个比对并返回名称</p>
+        </div>
+      </a>
+      <a class="feature-card {% if active_page == 'history' %}is-active{% endif %}" href="{{ url_for('history_page') }}">
+        <span class="feature-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 6h12"></path>
+            <path d="M8 12h12"></path>
+            <path d="M8 18h12"></path>
+            <path d="M4 6h.01"></path>
+            <path d="M4 12h.01"></path>
+            <path d="M4 18h.01"></path>
+          </svg>
+        </span>
+        <div>
+          <strong>历史管理</strong>
+          <p>集中查看模型包、结果与操作轨迹</p>
+        </div>
+      </a>
+    </nav>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="notice-stack">
+          {% for message in messages %}
+            <div class="notice-card">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

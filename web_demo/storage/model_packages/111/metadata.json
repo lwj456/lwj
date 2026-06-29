@@ -1,0 +1,8 @@
+{
+  "name": "111",
+  "code": "1010101010101010",
+  "saved_ckpt": "/home/lwj/data/AudioMarkNet_artifacts_lunwen/web_demo/storage/model_packages/111/ckpt/saved_epoch-50.tar",
+  "wm_length": 16,
+  "sr": 16000,
+  "train_samples": 9
+}

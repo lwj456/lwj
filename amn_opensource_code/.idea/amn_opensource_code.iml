@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Real-Time-Voice-Cloning" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Trainer" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/coqui_ai_TTS" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/aasist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/voxceleb_trainer" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/TimbreWatermarking/watermarking_model" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/TimbreWatermarking/watermarking_model/distortions" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+  <component name="TemplatesService">
+    <option name="TEMPLATE_CONFIGURATION" value="Jinja2" />
+    <option name="TEMPLATE_FOLDERS">
+      <list>
+        <option value="$MODULE_DIR$/coqui_ai_TTS/TTS/server/templates" />
+      </list>
+    </option>
+  </component>
+</module>

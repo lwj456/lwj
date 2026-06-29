@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block content %}
+  <section class="page-stack">
+    <section class="section-card section-card--gradient section-card--hero section-card--wide">
+      <div class="section-head">
+        <div>
+          <p class="section-label">Archive</p>
+          <h2>集中查看已创建水印与历史操作</h2>
+          <p class="section-copy section-copy--wide">所有已登记水印、模型包和最近嵌入或检测记录都汇总于此，便于回看、核对和清理。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-grid content-grid--lower content-grid--history">
+      <div class="content-main">
+        <section class="history-columns">
+          <section class="section-card form-card">
+            <div class="section-head section-head--tight">
+              <div>
+                <p class="section-label">Registry</p>
+                <h3>已保存模型包</h3>
+              </div>
+              <form action="{{ url_for('clear_watermarks') }}" method="post">
+                <button class="button button--danger" type="submit" onclick="return confirm('清空全部注册和模型包？')">清空模型包</button>
+              </form>
+            </div>
+            <div class="list-stack">
+              {% if watermarks %}
+                {% for item in watermarks %}
+                  <article class="record-card">
+                    <div>
+                      <strong>{{ item.name }}</strong>
+                      <p>{{ item.created_at }}</p>
+                    </div>
+                    <div class="record-card__meta">
+                      <span class="mono">{{ item.code }}</span>
+                      <span class="mono is-soft">{{ item.model_rel_path or '-' }}</span>
+                    </div>
+                  </article>
+                {% endfor %}
+              {% else %}
+                <p class="empty-text">暂无已保存模型包。</p>
+              {% endif %}
+            </div>
+          </section>
+
+          <section class="section-card form-card">
+            <div class="section-head section-head--tight">
+              <div>
+                <p class="section-label">Logs</p>
+                <h3>历史管理</h3>
+              </div>
+              <form action="{{ url_for('clear_history') }}" method="post">
+                <button class="button button--danger" type="submit" onclick="return confirm('确定清空全部历史记录吗？')">清空历史</button>
+              </form>
+            </div>
+            <div class="list-stack">
+              {% if records %}
+                {% for record in records %}
+                  <article class="record-card">
+                    <div>
+                      <strong>{{ record.operation }}</strong>
+                      <p>{{ record.created_at }} · {{ record.input_name }}</p>
+                    </div>
+                    <div class="record-card__meta">
+                      <span class="mono">{{ record.detected_code or record.watermark_code or '-' }}</span>
+                      <span class="status-pill success">{{ record.status }}</span>
+                    </div>
+                  </article>
+                {% endfor %}
+              {% else %}
+                <p class="empty-text">暂无历史记录。</p>
+              {% endif %}
+            </div>
+          </section>
+        </section>
+      </div>
+
+      <aside class="content-side content-side--lower">
+        <section class="section-card illustration-card illustration-card--archive">
+          <div class="illustration-copy">
+            <h3>提示</h3>
+            <p>水印编码、嵌入结果和检测记录都记录在此，方便在项目交付或实验复盘时快速定位。</p>
+          </div>
+          <div class="character-scene" aria-hidden="true">
+            <svg viewBox="0 0 260 220" fill="none">
+              <ellipse cx="130" cy="188" rx="82" ry="16" fill="rgba(198,185,255,0.24)"/>
+              <path d="M72 170C84 146 105 135 129 135C153 135 176 145 190 170" fill="url(#landA)"/>
+              <rect x="102" y="74" width="56" height="72" rx="20" fill="#FFFFFF" stroke="#BCB0FF" stroke-width="3"/>
+              <rect x="114" y="88" width="32" height="12" rx="6" fill="#EFEAFF"/>
+              <path d="M114 112H146" stroke="#8E7EF1" stroke-width="3" stroke-linecap="round"/>
+              <path d="M114 124H138" stroke="#8E7EF1" stroke-width="3" stroke-linecap="round"/>
+              <path d="M114 136H132" stroke="#8E7EF1" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="92" cy="86" r="12" fill="#DDF8E8"/>
+              <circle cx="178" cy="82" r="11" fill="#FFF0BC"/>
+              <circle cx="192" cy="62" r="6" fill="#FFD9CB"/>
+              <defs>
+                <linearGradient id="landA" x1="72" y1="135" x2="190" y2="170" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#D5C9FF"/>
+                  <stop offset="1" stop-color="#C6F0DA"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </section>
+      </aside>
+    </section>
+  </section>
+{% endblock %}

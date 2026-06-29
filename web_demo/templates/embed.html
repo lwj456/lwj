@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block content %}
+  <section class="page-stack">
+    <section class="section-card section-card--gradient section-card--hero section-card--wide">
+      <div class="section-head">
+        <div>
+          <p class="section-label">Embedding</p>
+          <h2>生成专属水印音频</h2>
+          <p class="section-copy section-copy--wide">输入名称与编码，上传原始音频后，系统会训练对应模型包并输出带水印音频，同时保留完整归档。</p>
+        </div>
+      </div>
+    </section>
+
+    {% if result %}
+      <section class="section-card result-card section-card--wide">
+        <div class="section-head section-head--tight">
+          <div>
+            <p class="section-label">Latest Result</p>
+            <h3>嵌入结果</h3>
+          </div>
+          <span class="status-pill {{ result.status }}">{{ result.status }}</span>
+        </div>
+        {% if result.status == 'success' %}
+          <div class="info-grid">
+            <div><label>名称</label><p>{{ result.watermark_name }}</p></div>
+            <div><label>输入文件</label><p>{{ result.input_name }}</p></div>
+            <div><label>输出文件</label><p>{{ result.output_name }}</p></div>
+            <div><label>水印编码</label><p class="mono">{{ result.watermark_code }}</p></div>
+            <div><label>模型包</label><p class="mono">{{ result.model_rel_path }}</p></div>
+            <div><label>时长 / 分段</label><p>{{ result.input_duration }} s / {{ result.segment_count }}</p></div>
+          </div>
+          <div class="progress-box">
+            <div class="progress-box__meta">
+              <span>训练进度</span>
+              <span>{{ (result.progress[-1].epoch if result.progress else 50) }} / 50</span>
+            </div>
+            <div class="progress-bar"><span style="width: {{ (result.progress[-1].progress * 100) if result.progress else 100 }}%"></span></div>
+          </div>
+          <div class="actions-row">
+            <a class="button button--primary" href="{{ result.download_url }}">下载水印音频</a>
+          </div>
+        {% else %}
+          <p class="error-text">{{ result.message }}</p>
+        {% endif %}
+      </section>
+    {% endif %}
+
+    <section class="content-grid content-grid--lower">
+      <div class="content-main">
+        <section class="section-card form-card">
+          <div class="section-head section-head--tight">
+            <div>
+              <p class="section-label">Input</p>
+              <h3>嵌入配置</h3>
+            </div>
+          </div>
+          <form action="{{ url_for('embed') }}" method="post" enctype="multipart/form-data" class="form-stack">
+            <label>水印名称</label>
+            <input name="watermark_name" placeholder="例如 project_alpha" required>
+            <label>水印编码</label>
+            <input name="watermark_code" maxlength="{{ wm_length }}" placeholder="例如 0101010101010101" required>
+            <label>原始音频</label>
+            <input type="file" name="audio_file" accept=".wav,.mp3,.flac,.m4a,.ogg" required>
+            <button class="button button--primary" type="submit">开始嵌入</button>
+          </form>
+        </section>
+      </div>
+
+      <aside class="content-side content-side--lower">
+        <section class="section-card illustration-card">
+          <div class="illustration-copy">
+            <h3>提示</h3>
+            <p>自定义水印编码和名称，系统会为当前输入建立专属模型记录，方便后续检测时直接按模型包做精确匹配。</p>
+          </div>
+          <div class="character-scene" aria-hidden="true">
+            <svg viewBox="0 0 260 220" fill="none">
+              <ellipse cx="130" cy="188" rx="72" ry="16" fill="rgba(198,185,255,0.28)"/>
+              <path d="M63 175C74 148 98 132 128 132C158 132 183 148 195 175" fill="url(#hillA)"/>
+              <path d="M87 172C96 155 111 146 130 146C148 146 163 155 173 172" fill="url(#hillB)"/>
+              <rect x="108" y="68" width="44" height="58" rx="18" fill="#FFFFFF" stroke="#BBAEFF" stroke-width="3"/>
+              <rect x="116" y="78" width="28" height="18" rx="9" fill="#EFEAFF"/>
+              <circle cx="126" cy="87" r="3.5" fill="#7D6BEB"/>
+              <circle cx="134" cy="87" r="3.5" fill="#7D6BEB"/>
+              <path d="M123 97C126 100 134 100 137 97" stroke="#7D6BEB" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M108 100L88 90" stroke="#A89AF8" stroke-width="4" stroke-linecap="round"/>
+              <path d="M152 100L172 90" stroke="#A89AF8" stroke-width="4" stroke-linecap="round"/>
+              <path d="M119 126L111 150" stroke="#A89AF8" stroke-width="4" stroke-linecap="round"/>
+              <path d="M141 126L149 150" stroke="#A89AF8" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="82" cy="86" r="12" fill="#FFF5C7"/>
+              <circle cx="180" cy="78" r="10" fill="#DDF8E8"/>
+              <circle cx="188" cy="60" r="6" fill="#FFDCC8"/>
+              <defs>
+                <linearGradient id="hillA" x1="63" y1="132" x2="195" y2="175" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#D8CCFF"/>
+                  <stop offset="1" stop-color="#C6F0DA"/>
+                </linearGradient>
+                <linearGradient id="hillB" x1="87" y1="146" x2="173" y2="172" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#B9A8FF"/>
+                  <stop offset="1" stop-color="#F8D9BE"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </section>
+      </aside>
+    </section>
+  </section>
+{% endblock %}

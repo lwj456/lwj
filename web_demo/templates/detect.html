@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block content %}
+  <section class="page-stack">
+    <section class="section-card section-card--gradient section-card--hero section-card--wide">
+      <div class="section-head">
+        <div>
+          <p class="section-label">Detection</p>
+          <h2>检测音频中是否含有水印</h2>
+          <p class="section-copy section-copy--wide">上传待检测音频后，系统会遍历当前已保存模型包并输出匹配名称；若未命中，则显示无水印。</p>
+        </div>
+      </div>
+    </section>
+
+    {% if result %}
+      <section class="section-card result-card section-card--wide">
+        <div class="section-head section-head--tight">
+          <div>
+            <p class="section-label">Latest Result</p>
+            <h3>检测结果</h3>
+          </div>
+          <span class="status-pill {{ result.status }}">{{ result.status }}</span>
+        </div>
+        {% if result.status == 'success' %}
+          {% if result.matched %}
+            <div class="info-grid">
+              <div><label>命中名称</label><p>{{ result.detected_name }}</p></div>
+              <div><label>匹配编码</label><p class="mono">{{ result.detected_code }}</p></div>
+              <div><label>模型包</label><p class="mono">{{ result.model_rel_path }}</p></div>
+              <div><label>输入文件</label><p>{{ result.input_name }}</p></div>
+              <div><label>均值置信度</label><p>{{ '%.4f'|format(result.confidence) }}</p></div>
+              <div><label>位一致率</label><p>{{ '%.4f'|format(result.bit_agreement) }}</p></div>
+            </div>
+          {% else %}
+            <div class="info-grid info-grid--compact">
+              <div><label>结果</label><p>{{ result.detected_name }}</p></div>
+              <div><label>原始解码</label><p class="mono">{{ result.raw_detected_code or '-' }}</p></div>
+              <div><label>输入文件</label><p>{{ result.input_name }}</p></div>
+              <div><label>均值置信度</label><p>{{ '%.4f'|format(result.confidence) }}</p></div>
+            </div>
+          {% endif %}
+        {% else %}
+          <p class="error-text">{{ result.message }}</p>
+        {% endif %}
+      </section>
+    {% endif %}
+
+    <section class="content-grid content-grid--lower">
+      <div class="content-main">
+        <section class="section-card form-card">
+          <div class="section-head section-head--tight">
+            <div>
+              <p class="section-label">Input</p>
+              <h3>检测配置</h3>
+            </div>
+          </div>
+          <form action="{{ url_for('detect') }}" method="post" enctype="multipart/form-data" class="form-stack">
+            <label>待检测音频</label>
+            <input type="file" name="audio_file" accept=".wav,.mp3,.flac,.m4a,.ogg" required>
+            <button class="button button--secondary" type="submit">开始检测</button>
+          </form>
+        </section>
+      </div>
+
+      <aside class="content-side content-side--lower">
+        <section class="section-card illustration-card illustration-card--alt">
+          <div class="illustration-copy">
+            <h3>提示</h3>
+            <p>检测页会从当前注册表中调取模型，逐个做解码比对，最后输出最匹配的名称结果。</p>
+          </div>
+          <div class="character-scene" aria-hidden="true">
+            <svg viewBox="0 0 260 220" fill="none">
+              <ellipse cx="130" cy="190" rx="80" ry="16" fill="rgba(198,185,255,0.26)"/>
+              <path d="M70 172C84 145 107 133 131 133C157 133 181 146 193 172" fill="url(#mountA)"/>
+              <path d="M98 170C107 156 117 148 130 148C144 148 155 157 163 170" fill="url(#mountB)"/>
+              <circle cx="130" cy="104" r="36" fill="#FFFFFF" stroke="#B9ACFF" stroke-width="3"/>
+              <circle cx="119" cy="98" r="4" fill="#7867EC"/>
+              <circle cx="141" cy="98" r="4" fill="#7867EC"/>
+              <path d="M117 115C124 121 136 121 143 115" stroke="#7867EC" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M130 68V52" stroke="#A791FF" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="130" cy="46" r="7" fill="#FFE0B8"/>
+              <rect x="106" y="138" width="48" height="18" rx="9" fill="#EDE7FF"/>
+              <circle cx="86" cy="82" r="11" fill="#DDF8E8"/>
+              <circle cx="178" cy="86" r="11" fill="#FFF3C0"/>
+              <circle cx="191" cy="66" r="6" fill="#FFD6CB"/>
+              <defs>
+                <linearGradient id="mountA" x1="70" y1="133" x2="193" y2="172" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#D7CCFF"/>
+                  <stop offset="1" stop-color="#FFE3C7"/>
+                </linearGradient>
+                <linearGradient id="mountB" x1="98" y1="148" x2="163" y2="170" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#B9A8FF"/>
+                  <stop offset="1" stop-color="#CBEFD9"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </section>
+      </aside>
+    </section>
+  </section>
+{% endblock %}
